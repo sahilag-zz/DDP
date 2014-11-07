@@ -2,21 +2,21 @@ Implementing Prof Sule's ON expansion algo http://arxiv.org/pdf/1406.4712v3.pdf
 
 Sequential implementation with matrix used to store cnf
 
-main.cpp : 			converts cnf to matrix and calls algorithm().
-					prints stats
+main.cpp:	converts cnf to matrix and calls algorithm().
+			prints stats
 			
-algorithm.cpp:		contains definitions of algorithm() and decompose()
+algorithm.cpp:	contains definitions of algorithm() and decompose()
 
-functions.cpp: 		contains definitions of functions like reduce, pureliteral
-					and unitclauses..
+functions.cpp:	contains definitions of functions like reduce, pureliteral
+				and unitclauses..
 				
-functions.h:		declarations of all functions
+functions.h:	declarations of all functions
 
 solveMinisat.cpp:	invokes minisat on the reduced subproblem
 
-minisat/ : 			contains header and cpp files used by program
+minisat/ :	contains header and cpp files used by program
 
-ex_cnf/ :			contains example cnfs
+ex_cnf/ :	contains example cnfs
 
 TO RUN
 
