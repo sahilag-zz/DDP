@@ -1,20 +1,20 @@
 SATISFIABLE
 
-File 					Variables	Clauses		minisat(s)	sequential(s)
+File			Variables	Clauses		minisat(s)	sequential(s)
 
-flat30_3_0.col			90			300			0.000999	0.007998 
-par8-1-c.cnf			64			254			0.000999 	0.007999
-aim-50-1_6-yes1-4.cnf	50			80 			0			1.091
-test1.cnf				20			91			0.000999 	0.001999  
-quinn.cnf				16			18			0.000999	0
+flat30_3_0.col		90		300		0.000999	0.007998 
+par8-1-c.cnf		64		254		0.000999 	0.007999
+aim-50-1_6-yes1-4.cnf	50		80 		0		1.091
+test1.cnf		20		91		0.000999 	0.001999  
+quinn.cnf		16		18		0.000999	0
 
 UNSATISFIABLE
 
-File 					Variables	Clauses		minisat(s)	sequential(s)
+File 			Variables	Clauses		minisat(s)	sequential(s)
 
-aim-100-1_6-no-1.cnf	100			160			0.000999	
-dubois20.cnf			60			160			0.003999	
-hole6.cnf				42			133			0.005999 	0.067989 
+aim-100-1_6-no-1.cnf	100		160		0.000999	
+dubois20.cnf		60		160		0.003999	
+hole6.cnf		42		133		0.005999 	0.067989 
 
 
 
