@@ -1,0 +1,10 @@
+Implementing Prof Sule's ON expansion algo http://arxiv.org/pdf/1406.4712v3.pdf
+Using his style of representation of CNF using matrix.. so here the matrix is 
+the cnf
+
+std::to_string is being used and it must be compiled with -std=c++0x flag.
+Hence g++ -std=c++0x main.cpp ...
+
+Using minisat:
+>> minisat <input> <output> :this will write SAT/UNSAT and the solution to 
+output file
