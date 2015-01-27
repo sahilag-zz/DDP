@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <time.h>
+//#include <time.h>
 #include "utils/System.h"
 #include "functions.h"
 
@@ -15,7 +15,7 @@ using namespace std;
 const int N0 = 4;
 
 int main (int argc,char *argv[]){
-	clock_t tStart = clock();
+	//clock_t tStart = clock();
 	double initial_time = Minisat::cpuTime();
 	int clauses, vars;
 	ifstream read;
@@ -73,6 +73,7 @@ int main (int argc,char *argv[]){
 	else cout<<"SAT\n";	
 
 	cout<<"Time taken: "<<final_time-initial_time<<" s"<<endl;
+	//cout<<"Time taken: "<<((float)clock()-tStart)/CLOCKS_PER_SEC<<" s"<<endl;
 	}
 	return 0;
 }
