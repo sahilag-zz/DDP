@@ -1,3 +1,6 @@
+#ifndef MYSOLVER_H
+#define MYSOLVER_H
+
 #include <vector>
 using namespace std;
 typedef enum satbool {
@@ -21,10 +24,11 @@ public:
 	
 	satbool SolveMinisat();
 	satbool decompose();
+	void read(string &file);
 	void disp_cnf();
 	void disp_cnf(vector<vector <int> > &vv);
 	void disp_state();
 	void disp_state(satbool &state);
 };
-
+#endif
 

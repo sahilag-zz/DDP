@@ -1,4 +1,7 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include "mySolver.h"
 #include "core/Solver.h"
 
@@ -112,6 +115,48 @@ satbool mySolver::SolveMinisat(){
 	
 	if (temp = true) return SAT;
 	else return UNSAT;
+	
+}
+// ---------------------------- READ() ---------------------------------------//
+
+void mySolver::read(string &file){
+
+	vector <int> clause;
+	ifstream input;
+	string line;
+	input.open(file.c_str()); //to convert string to const *char
+
+	// loop below to extract #vars and #clauses
+	while(getline(input,line)){
+
+		if (line[0]=='c') continue; //comment
+	
+		if (line[0]=='p'){
+			istringstream iss(line);			
+			string a;
+
+			iss >> a; 
+			iss >> a; 
+			iss >> nvars;
+			iss >> nclauses;
+			break;
+		} 		
+	}
+
+	// loop below to extract data
+	int temp, i=0; //i denotes row/clause in this loop
+	while (input>>temp){
+		if (temp==0){
+			cnf.push_back(clause);
+			//disp_vector(clause);
+			clause.clear();
+			continue;
+		}
+		else clause.push_back(temp);
+	
+	}
+
+	input.close();
 	
 }
 //---------------------------DISPLAY FUNCTIONS--------------------------------//
