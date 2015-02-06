@@ -19,7 +19,7 @@ public:
 	//int currclauses,currvars; // could be implemented
 	int nvars,nclauses;
 	
-	satbool simplify(vector <int> &assums, vector< vector<int> > &tempcnf);
+	satbool simplify(vector <int> assums, vector< vector<int> > &tempcnf);
 	void solve();
 	
 	satbool SolveMinisat(const vector< vector<int> > &tempcnf);

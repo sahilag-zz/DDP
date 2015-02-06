@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <algorithm>
 #include "mySolver.h"
 #include "core/Solver.h"
 
@@ -14,6 +15,7 @@ void disp_vector(const vector<int> &v){
     }
     cout<<endl;
 }
+
 
 // --------------------------- SOLVE() ---------------------------------------//
 void mySolver::solve(){
@@ -60,8 +62,9 @@ satbool mySolver::decompose(vector <int> assums){
 }
 // ------------------------- SIMPLIFY() --------------------------------------//
 
-satbool mySolver::simplify(vector<int> &assums, vector< vector<int> > &tempcnf){
+satbool mySolver::simplify(vector<int> assums, vector< vector<int> > &tempcnf){
 	
+	sort(assums.begin(),assums.end());
 	tempcnf.clear();
 	vector<int> tempclause;
 	bool flag=0;
@@ -69,18 +72,16 @@ satbool mySolver::simplify(vector<int> &assums, vector< vector<int> > &tempcnf){
 		tempclause.clear();
 		for (int k=0;k<cnf[j].size();k++){
 			tempclause.push_back(cnf[j][k]);
-			for (int i=0;i<assums.size();i++){
-				
-				if (assums[i]==cnf[j][k]){
-					tempclause.clear();
-					flag=1;break; //clause is SAT
-				}
-				else if (assums[i]==-cnf[j][k]){
-					tempclause.pop_back();
-					break;
-				}
+			if(binary_search(assums.begin(), assums.end(), cnf[j][k])){
+     			
+				tempclause.clear();
+				flag=1;break; //clause is SAT
 			}
-			if (flag==1) break;
+			else if (binary_search(assums.begin(), assums.end(), -cnf[j][k])){
+				tempclause.pop_back();
+				
+			}
+			
 		}
 		if (flag==0){ //if clause is SAT no need to add clause to tempcnf
 			if (tempclause.size()==0) return UNSAT; 
