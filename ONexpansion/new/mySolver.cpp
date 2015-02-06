@@ -17,32 +17,40 @@ void disp_vector(const vector<int> &v){
 
 // --------------------------- SOLVE() ---------------------------------------//
 void mySolver::solve(){
-			
-	if (decompose()==SAT) cout<<"SAT\n";
+	vector <int> zero; //empty vector		
+	if (decompose(zero)==SAT) cout<<"SAT\n";
 	else cout<<"UNSAT\n";
+	
+	//** have to implement printing/storing of assumptions for SAT **//
 }
 
 
 // ------------------------- DECOMPOSE() -------------------------------------//
+// currently passing assumptions by value to decompose...
 
-satbool mySolver::decompose(){
-	//cout<<"decompose\n";
+satbool mySolver::decompose(vector <int> assums){
+	
 	static int count=1; //for ONterms (temporary) -- indicating tree depth
-	//cout<<count<<endl;		
+	vector< vector<int> > tempcnf; //for storing cnf after applying assums	
 	satbool temp,temp1;
 	
-	simplify();
+	simplify(assums,tempcnf);
 	
-	if (tempcnf.size()<nclauses/2) return SolveMinisat();
+	if (tempcnf.size()<nclauses/2) return SolveMinisat(tempcnf);
 	
 	for (int i=0;i<2;i++){
 		assums.push_back(count*(1-2*i));
-		temp=simplify(); //disp_state(temp);cout<<endl;
+		// implement such that only new assums need to accounted rather than
+		// the whole simplify all over again
+		
+		temp=simplify(assums,tempcnf); 
+		tempcnf.clear(); // to release space??
+		
 		if (temp==UNSAT){assums.pop_back();continue;}
 		else if (temp==SAT) return SAT;
 		else {
 			count++; 
-			temp1=decompose();
+			temp1=decompose(assums);
 			if (temp1==SAT) return SAT;
 		}
 		assums.pop_back();
@@ -52,11 +60,13 @@ satbool mySolver::decompose(){
 }
 // ------------------------- SIMPLIFY() --------------------------------------//
 
-satbool mySolver::simplify(){
-	//cout<<"simplify\n";
+satbool mySolver::simplify(vector<int> &assums, vector< vector<int> > &tempcnf){
+	
 	tempcnf.clear();
+	vector<int> tempclause;
 	bool flag=0;
 	for (int j=0;j<cnf.size();j++){
+		tempclause.clear();
 		for (int k=0;k<cnf[j].size();k++){
 			tempclause.push_back(cnf[j][k]);
 			for (int i=0;i<assums.size();i++){
@@ -75,32 +85,27 @@ satbool mySolver::simplify(){
 		if (flag==0){ //if clause is SAT no need to add clause to tempcnf
 			if (tempclause.size()==0) return UNSAT; 
 			tempcnf.push_back(tempclause);
-			tempclause.clear();
 		}
 		flag=0;
 	}
-	//disp_vector(assums);
-	//cout<<"size: "<<tempcnf.size()<<endl;
-	//disp_cnf(tempcnf);
 	if (tempcnf.size()==0) return SAT;
 	
 	return NONE;
 }
 
 // ------------------------- SolveMinisat() ----------------------------------//
-satbool mySolver::SolveMinisat(){
-	//cout<<"minisat\n";
+satbool mySolver::SolveMinisat(const vector< vector<int> > &tempcnf){
+	
 	Minisat::Solver S;
 	bool flag;
 	for(int i = 0; i < nvars; i++) {
 		S.newVar();
 	}
-	//disp_cnf(tempcnf);cout<<nvars<<endl;
+	
 	Minisat::vec<Minisat::Lit> clause;
 	int j;
 	for (int i=0;i<tempcnf.size();i++){			
-		for (j=0;j<tempcnf[i].size();j++){
-			//cout<<i<<" "<<j<<endl;				
+		for (j=0;j<tempcnf[i].size();j++){				
 			clause.push(Minisat::mkLit(abs(tempcnf[i][j])-1, 
 				tempcnf[i][j]>0 ? true:false));
 		}
@@ -148,14 +153,11 @@ void mySolver::read(string &file){
 	while (input>>temp){
 		if (temp==0){
 			cnf.push_back(clause);
-			//disp_vector(clause);
 			clause.clear();
 			continue;
 		}
-		else clause.push_back(temp);
-	
+		else clause.push_back(temp);	
 	}
-
 	input.close();
 	
 }
@@ -171,7 +173,6 @@ void mySolver::disp_cnf(){
 	cout<<endl;	
 }
 void mySolver::disp_cnf(vector<vector <int> > &vv){
-	//cout<<vv.size()<<endl;	
 	for (int i=0;i<vv.size();i++){
 		for (int j=0;j<vv[i].size();j++){
 			cout<<vv[i][j]<<" ";
@@ -179,11 +180,6 @@ void mySolver::disp_cnf(vector<vector <int> > &vv){
 		cout<<endl;
 	}	
 	cout<<endl; 	
-}
-void mySolver::disp_state(){
-	if (currentstate==SAT) cout<<"SAT\n";
-	else if (currentstate==UNSAT) cout<<"UNSAT\n";
-	else cout<<"NONE\n";
 }
 void mySolver::disp_state(satbool &state){
 	if (state==SAT) cout<<"SAT\n";

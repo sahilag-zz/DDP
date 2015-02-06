@@ -6,7 +6,7 @@ vector of vectors used as datastructure
 
 main.cpp:	initializes mySolver. Prints stats (timing, memory)
 			
-mySolver.cpp:	definitions of all member of functions of mySolver
+mySolver.cpp:	definitions of all member functions of mySolver
 
 mySolver.h:	declarations of members of class mySolver
 
