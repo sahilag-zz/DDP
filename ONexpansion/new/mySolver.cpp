@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <set>
 #include <algorithm>
 #include "mySolver.h"
 #include "core/Solver.h"
@@ -19,7 +20,7 @@ void disp_vector(const vector<int> &v){
 
 // --------------------------- SOLVE() ---------------------------------------//
 void mySolver::solve(){
-	vector <int> zero; //empty vector		
+	set<int> zero; //empty set		
 	if (decompose(zero)==SAT) cout<<"SAT\n";
 	else cout<<"UNSAT\n";
 	
@@ -30,41 +31,40 @@ void mySolver::solve(){
 // ------------------------- DECOMPOSE() -------------------------------------//
 // currently passing assumptions by value to decompose...
 
-satbool mySolver::decompose(vector <int> assums){
+satbool mySolver::decompose(set<int> assums){
 	
 	static int count=1; //for ONterms (temporary) -- indicating tree depth
 	vector< vector<int> > tempcnf; //for storing cnf after applying assums	
 	satbool temp,temp1;
-	
 	simplify(assums,tempcnf);
 	
 	if (tempcnf.size()<nclauses/2) return SolveMinisat(tempcnf);
 	
 	for (int i=0;i<2;i++){
-		assums.push_back(count*(1-2*i));
+		assums.insert(count*(1-2*i));
 		// implement such that only new assums need to accounted rather than
 		// the whole simplify all over again
 		
 		temp=simplify(assums,tempcnf); 
 		tempcnf.clear(); // to release space??
 		
-		if (temp==UNSAT){assums.pop_back();continue;}
+		if (temp==UNSAT){assums.erase(1-2*i);continue;}
 		else if (temp==SAT) return SAT;
 		else {
 			count++; 
 			temp1=decompose(assums);
 			if (temp1==SAT) return SAT;
 		}
-		assums.pop_back();
+		assums.erase(1-2*i);
 	}
 	count--;
 	return UNSAT;
 }
 // ------------------------- SIMPLIFY() --------------------------------------//
 
-satbool mySolver::simplify(vector<int> assums, vector< vector<int> > &tempcnf){
+satbool mySolver::simplify(set<int> assums, vector< vector<int> > &tempcnf){
 	
-	sort(assums.begin(),assums.end());
+	//sort(assums.begin(),assums.end());
 	tempcnf.clear();
 	vector<int> tempclause;
 	bool flag=0;
@@ -72,14 +72,12 @@ satbool mySolver::simplify(vector<int> assums, vector< vector<int> > &tempcnf){
 		tempclause.clear();
 		for (int k=0;k<cnf[j].size();k++){
 			tempclause.push_back(cnf[j][k]);
-			if(binary_search(assums.begin(), assums.end(), cnf[j][k])){
-     			
+			if(assums.find(cnf[j][k]) != assums.end()){     			
 				tempclause.clear();
 				flag=1;break; //clause is SAT
 			}
-			else if (binary_search(assums.begin(), assums.end(), -cnf[j][k])){
-				tempclause.pop_back();
-				
+			else if(assums.find(-cnf[j][k]) != assums.end()){ 
+				tempclause.pop_back();				
 			}
 			
 		}

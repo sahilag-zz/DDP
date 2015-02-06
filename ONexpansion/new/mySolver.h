@@ -1,6 +1,6 @@
 #ifndef MYSOLVER_H
 #define MYSOLVER_H
-
+#include <set>
 #include <vector>
 using namespace std;
 typedef enum satbool {
@@ -19,11 +19,11 @@ public:
 	//int currclauses,currvars; // could be implemented
 	int nvars,nclauses;
 	
-	satbool simplify(vector <int> assums, vector< vector<int> > &tempcnf);
+	satbool simplify(set<int> assums, vector< vector<int> > &tempcnf);
 	void solve();
 	
 	satbool SolveMinisat(const vector< vector<int> > &tempcnf);
-	satbool decompose(vector <int> assums);
+	satbool decompose(set<int> assums);
 	void read(string &file);
 	void disp_cnf();
 	void disp_cnf(vector<vector <int> > &vv);
