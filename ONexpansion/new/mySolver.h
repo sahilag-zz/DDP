@@ -22,7 +22,7 @@ public:
 	satbool simplify(set<int> assums, vector< vector<int> > &tempcnf);
 	void solve();
 	
-	satbool SolveMinisat(const vector< vector<int> > &tempcnf);
+	satbool SolveMinisat(vector< vector<int> > &tempcnf);
 	satbool decompose(set<int> assums);
 	void read(string &file);
 	void disp_cnf();

@@ -17,7 +17,17 @@ void disp_vector(const vector<int> &v){
     cout<<endl;
 }
 
-
+void disp_set(const set<int> &myset){
+    set<int>::const_iterator it; // declare an iterator
+    it = myset.begin(); // assign it to the start of the set
+    while (it != myset.end()) // while it hasn't reach the end
+    {
+        cout << *it << " "; // print the value of the element it points to
+        it++; // and iterate to the next element
+    }
+ 
+    cout << endl;
+}
 // --------------------------- SOLVE() ---------------------------------------//
 void mySolver::solve(){
 	set<int> zero; //empty set		
@@ -33,29 +43,33 @@ void mySolver::solve(){
 
 satbool mySolver::decompose(set<int> assums){
 	
-	static int count=1; //for ONterms (temporary) -- indicating tree depth
+	static int count=1; //for ONterms (temporary) -- indicating tree depth	
 	vector< vector<int> > tempcnf; //for storing cnf after applying assums	
 	satbool temp,temp1;
+	
 	simplify(assums,tempcnf);
 	
-	if (tempcnf.size()<nclauses/2) return SolveMinisat(tempcnf);
+	if (tempcnf.size()<nclauses/2) {count--; return SolveMinisat(tempcnf);}
 	
 	for (int i=0;i<2;i++){
+		
 		assums.insert(count*(1-2*i));
+		
 		// implement such that only new assums need to accounted rather than
 		// the whole simplify all over again
 		
-		temp=simplify(assums,tempcnf); 
+		temp=simplify(assums,tempcnf);
+		
 		tempcnf.clear(); // to release space??
 		
-		if (temp==UNSAT){assums.erase(1-2*i);continue;}
+		if (temp==UNSAT){assums.erase(count*(1-2*i));continue;}
 		else if (temp==SAT) return SAT;
 		else {
 			count++; 
 			temp1=decompose(assums);
 			if (temp1==SAT) return SAT;
 		}
-		assums.erase(1-2*i);
+		assums.erase(count*(1-2*i));		
 	}
 	count--;
 	return UNSAT;
@@ -64,7 +78,6 @@ satbool mySolver::decompose(set<int> assums){
 
 satbool mySolver::simplify(set<int> assums, vector< vector<int> > &tempcnf){
 	
-	//sort(assums.begin(),assums.end());
 	tempcnf.clear();
 	vector<int> tempclause;
 	bool flag=0;
@@ -93,10 +106,10 @@ satbool mySolver::simplify(set<int> assums, vector< vector<int> > &tempcnf){
 }
 
 // ------------------------- SolveMinisat() ----------------------------------//
-satbool mySolver::SolveMinisat(const vector< vector<int> > &tempcnf){
-	
+satbool mySolver::SolveMinisat(vector< vector<int> > &tempcnf){
+
 	Minisat::Solver S;
-	bool flag;
+
 	for(int i = 0; i < nvars; i++) {
 		S.newVar();
 	}
@@ -117,7 +130,7 @@ satbool mySolver::SolveMinisat(const vector< vector<int> > &tempcnf){
 	Minisat::vec<Minisat::Lit> dummy;
 	bool temp = S.solve(dummy);
 	
-	if (temp = true) return SAT;
+	if (temp == true) return SAT;
 	else return UNSAT;
 	
 }
