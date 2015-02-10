@@ -1,29 +1,31 @@
-using namespace std;
+#include <time.h> 
+#include <iostream>
 #include <omp.h>
-#include<iostream>
-#define CHUNKSIZE 10
-#define N     100
+#include <stdio.h>
 
-main ()  
-{
+using namespace std;
 
-int i, chunk, tid;
-float a[N], b[N], c[N];
 
-/* Some initializations */
-for (i=0; i < N; i++)
-  a[i] = b[i] = i * 1.0;
-chunk = CHUNKSIZE;
+int main(){
 
-#pragma omp parallel shared(a,b,c,chunk) private(i,tid) 
-  {
-	tid = omp_get_thread_num();
-  #pragma omp for schedule(dynamic,chunk) nowait
-  for (i=0; i < N; i++)
-    c[i] = tid; 
+	clock_t init = clock();
+	time_t ti = time(NULL);
+	int tid;
 	
-  }  /* end of parallel section */
 	
-	for (int i=0;i<N;i++) cout<<c[i]<<" ";
-	cout<<endl;
+	 #pragma omp parallel 
+	 {
+	#pragma omp for 
+  	
+  	for(int x=0; x < 100000; x++){
+	
+		for(int y=0; y < 20000; y++){
+			//tid = omp_get_thread_num();
+	  		//printf("Hello World from thread = %d\n", tid);
+	  	}
+	}
+	}	
+	cout<< clock() - init <<endl;
+	cout<< time(NULL) - ti<< endl;
+	return 0;
 }

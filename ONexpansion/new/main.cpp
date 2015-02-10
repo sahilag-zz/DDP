@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include "mySolver.h"
+#include "mySolver_vec.h"
 #include "utils/System.h" //for time and memory
 
 using namespace std;
