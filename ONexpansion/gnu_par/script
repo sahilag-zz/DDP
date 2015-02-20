@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export MROOT="$PWD/minisat"
+g++ -I$MROOT -D __STDC_LIMIT_MACROS -D __STDC_FORMAT_MACROS\
+	main.cpp mySolver.cpp  $PWD/minisat/core/Solver.cc
+#./a.out
+
+
+
