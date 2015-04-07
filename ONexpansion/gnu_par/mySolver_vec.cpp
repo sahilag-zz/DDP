@@ -38,7 +38,9 @@ satbool mySolver::decompose(vector <int> assums){
 	
 	simplify(assums,tempcnf);
 	
-	if (tempcnf.size()<nclauses/2) {count--; return SolveMinisat(tempcnf);}
+	if (tempcnf.size()<nclauses -10) {
+		count--;  gencnf(tempcnf,assums); return UNSAT;
+	}
 	
 	for (int i=0;i<2;i++){
 		assums.push_back(count*(1-2*i));
@@ -94,34 +96,34 @@ satbool mySolver::simplify(vector<int> assums, vector< vector<int> > &tempcnf){
 	return NONE;
 }
 
-// ------------------------- SolveMinisat() ----------------------------------//
-satbool mySolver::SolveMinisat(const vector< vector<int> > &tempcnf){
+// ------------------------- GenCnf() ----------------------------------//
+void mySolver::gencnf(vector< vector<int> > &tempcnf, vector <int> assums){
+	static int count = 0;
+	ofstream ofile;
+	ostringstream oss;
+	oss << "gen" << count << ".cnf" ;
+	string file = oss.str();
+	ofile.open (file.c_str());
 	
-	Minisat::Solver S;
-	bool flag;
-	for(int i = 0; i < nvars; i++) {
-		S.newVar();
+	ofile << "c assumptions";
+	vector<int>::const_iterator it; // declare an iterator
+	it = assums.begin(); // assign it to the start of the set
+	while (it != assums.end()) // while it hasn't reach the end
+	{
+		ofile << *it << " "; // print the value of the element it points to
+		it++; // and iterate to the next element
 	}
+	ofile << endl;
 	
-	Minisat::vec<Minisat::Lit> clause;
-	int j;
-	for (int i=0;i<tempcnf.size();i++){			
-		for (j=0;j<tempcnf[i].size();j++){				
-			clause.push(Minisat::mkLit(abs(tempcnf[i][j])-1, 
-				tempcnf[i][j]>0 ? true:false));
-		}
-		if (j==0) S.addEmptyClause();
-		else S.addClause(clause);
-				
-		clause.clear();			
+	ofile << "p cnf "<<nvars<<" "<<tempcnf.size()<<endl;
+	for (int i=0;i<tempcnf.size();i++){
+		for (int j=0;j<tempcnf[i].size();j++){
+			ofile << tempcnf[i][j]<<" ";
+		}		
+		ofile <<"0\n";
 	}
-	
-	Minisat::vec<Minisat::Lit> dummy;
-	bool temp = S.solve(dummy);
-	
-	if (temp == true) return SAT;
-	else return UNSAT;
-	
+	ofile.close();
+	count++;
 }
 // ---------------------------- READ() ---------------------------------------//
 

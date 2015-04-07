@@ -2,8 +2,12 @@
 
 export MROOT="$PWD/minisat"
 g++ -I$MROOT -D __STDC_LIMIT_MACROS -D __STDC_FORMAT_MACROS\
-	main.cpp mySolver.cpp  $PWD/minisat/core/Solver.cc
-#./a.out
+	main.cpp mySolver_freq.cpp  $PWD/minisat/core/Solver.cc
+	
+./a.out engine_4.cnf
 
+time ./solve
+
+rm gen*
 
 

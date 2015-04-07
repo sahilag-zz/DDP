@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#call_msat() {
+#	minisat $1 ex_cnfs/CBS/$(basename $1 .cnf).sol > ex_cnfs/CBS/$(basename $1 .cnf).o
+#	#filename = "ex_cnfs/$(basename $1 .cnf).sol"
+#	local line=$(head -n 1 ex_cnfs/CBS/$(basename $1 .cnf).sol) 
+	
+#	if [ "$line" == "SAT" ];
+#	then
+#		echo 1
+#	else 
+#		echo 0
+#	fi
+	
+#}
+parallel --progress --env PATH --workdir . --sshloginfile nodefile \
+'minisat {} > {.}.o' ::: ex_cnfs/CBS/*.cnf

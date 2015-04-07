@@ -1,0 +1,5 @@
+#!/bin/bash
+
+parallel   \
+'minisat {} > ex_cnfs/CBS/{/.}.o' ::: ex_cnfs/CBS/*.cnf
+

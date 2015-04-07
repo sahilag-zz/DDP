@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+for i in ex_cnfs/CBS/CBS*.cnf; do 
+	minisat $i > ex_cnfs/CBS/$(basename $i .cnf).o
+done

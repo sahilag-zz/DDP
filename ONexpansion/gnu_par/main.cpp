@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include "mySolver.h"
+#include "mySolver_vec.h"
 #include "utils/System.h" //for time and memory
 
 using namespace std;
@@ -16,11 +16,13 @@ int main (int argc,char *argv[]){
 	
 		S.read(file);
 		
-		S.solve();
-		double final_time = Minisat::cpuTime();
+
+		double parse_time = Minisat::cpuTime();
 		
-		cout<<"Time taken: "<<final_time-initial_time<<" s"<<endl;
-		
+		cout<<"Parse time: "<<parse_time-initial_time<<" s"<<endl;
+
+		//S.gencnf(S.cnf);
+		S.solve();		
 	}
 	return 0;
 }

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+call_msat() {
+	minisat $1 ex_cnfs/CBS/$(basename $1 .cnf).sol > ex_cnfs/CBS/$(basename $1 .cnf).o
+	#filename = "ex_cnfs/$(basename $1 .cnf).sol"
+	local line=$(head -n 1 ex_cnfs/CBS/$(basename $1 .cnf).sol) 
+	
+	if [ "$line" == "SAT" ];
+	then
+		echo 1
+	else 
+		echo 0
+	fi
+	
+}
+
+#my_func "ex_cnfs/flat30-1.cnf"
+export -f call_msat
+parallel  call_msat {} ::: ex_cnfs/CBS/*.cnf \
+| parallel  --halt 2  exit
+

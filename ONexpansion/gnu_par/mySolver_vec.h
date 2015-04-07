@@ -20,8 +20,11 @@ public:
 	int nvars,nclauses;
 	
 	satbool simplify(vector <int> assums, vector< vector<int> > &tempcnf);
+	satbool simple_simplify(vector<int> assums, vector< vector<int> > &tempcnf);
 	void solve();
-	
+	int splitVar(vector< vector<int> > &tempcnf);
+	void gencnf(vector< vector<int> > &tempcnf, vector <int> assums);
+	void gencnf(vector< vector<int> > &tempcnf);
 	satbool SolveMinisat(const vector< vector<int> > &tempcnf);
 	satbool decompose(vector <int> assums);
 	void read(string &file);
