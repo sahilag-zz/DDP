@@ -1,6 +1,0 @@
-  # Only works in Bash and only if $SHELL=.../bash
-  my_func() {
-    echo in my_func $1
-  }
-  export -f my_func
-  parallel my_func ::: 1 2 3

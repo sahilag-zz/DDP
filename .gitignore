@@ -43,3 +43,6 @@
 *.app
 
 .nfs*
+
+# for my work
+*.cnf
