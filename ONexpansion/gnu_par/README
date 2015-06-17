@@ -1,12 +1,53 @@
 Parallel implementation of ONexpansion
 
-vector of vectors used as datastructure
+Part1: decomposing given cnf into subproblems
+
+Part2: solving subproblems in parallel
 
 -- CONTENTS --
 
+CNFs being used:
+
+12pipe_bug1_q0.cnf : SAT 
+engine_4.cnf : UNSAT
+engine_6_nd_case1.cnf : UNSAT
+
+My code:
+
+Part1:
+	main.cpp
+
+	mySolver_freq.cpp: 
+
+		-- splits the cnf using a variable at each stage
+		-- splitting variable decided by most frequent in current simplified cnf
+		-- prints out all generated cnfs
+	
+	mySolver_freq1.cpp:
+	
+		-- same as above except prints out all assumptions instead of cnfs
+		
+	mySolver_fixed.cpp:
+		
+		-- same as mySolver_freq.cpp except variable splitting order fixed
+
+Part2:
+	
+	part2.cpp:
+	
+		-- for mySolver_fixed1.cpp
+		-- takes original cnf and adds assumptions to it. solve using minisat
+		-- prints SAT/UNSAT to .sol file
 
 
--- TO RUN --
+Exexution:
+
+	script: executes part1 --> splits cnf into subproblems, will either print 
+			cnfs or assumptions
+			
+	solve: 
+	
+	
 
 
 

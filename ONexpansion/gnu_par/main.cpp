@@ -19,10 +19,14 @@ int main (int argc,char *argv[]){
 
 		double parse_time = Minisat::cpuTime();
 		
-		cout<<"Parse time: "<<parse_time-initial_time<<" s"<<endl;
+		//cout<<"Parse time: "<<parse_time-initial_time<<" s"<<endl;
 
 		//S.gencnf(S.cnf);
-		S.solve();		
+		S.solve();	
+		
+		double solve_time = Minisat::cpuTime();
+		
+		//cout<<"Solve time: "<<solve_time-parse_time<<" s"<<endl;	
 	}
 	return 0;
 }

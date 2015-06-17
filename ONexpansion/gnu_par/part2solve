@@ -1,7 +1,10 @@
 #!/bin/bash
 
 call_msat() {
-	minisat $1 $(basename $1 .cnf).sol > $(basename $1 .cnf).o
+
+	infile="engine_4.cnf"
+	./part2 $infile $1 $(basename $1 .cnf).sol	
+	
 	#filename = "ex_cnfs/$(basename $1 .cnf).sol"
 	local line=$(head -n 1 $(basename $1 .cnf).sol) 
 	
@@ -16,6 +19,8 @@ call_msat() {
 
 #my_func "ex_cnfs/flat30-1.cnf"
 export -f call_msat
-parallel --progress -j8 call_msat {} ::: gen*.cnf \
-| parallel --progress --halt 2  exit
+
+parallel --progress -j8 call_msat {} ::: gen*.cnf | parallel --progress --halt 2  exit
+
+#parallel --progress -j8 call_msat {} ::: gen*.cnf | parallel --progress ::: wc
 

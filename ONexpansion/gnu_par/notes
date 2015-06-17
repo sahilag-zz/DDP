@@ -1,0 +1,5 @@
+9/6
+
+-- for calling minisat using a cnf file with assumptions file
+
+		lets try to concatenate the 2 files and push it into minisat

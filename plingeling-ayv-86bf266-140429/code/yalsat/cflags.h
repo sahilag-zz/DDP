@@ -1,0 +1,2 @@
+#define YALS_CC "gcc (GCC) 4.6.3 20120306 (Red Hat 4.6.3-2)"
+#define YALS_CFLAGS "-Wall -DNDEBUG -O3 -DNYALSMEMS -DNYALSTATS"

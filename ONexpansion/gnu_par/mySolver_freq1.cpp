@@ -54,7 +54,7 @@ satbool mySolver::decompose(vector <int> assums){
 	simple_simplify(assums,tempcnf);
 	int split = splitVar(tempcnf); 
 	//cout<<split<<" at level "<<count<<endl;
-	if (6 == count) {
+	if (9 == count) {
 		count--;  gencnf(tempcnf,assums); return UNSAT;
 	}
 	
@@ -149,6 +149,8 @@ satbool mySolver::simplify(vector<int> assums, vector< vector<int> > &tempcnf){
 
 // ------------------------- GenCnf() ----------------------------------//
 void mySolver::gencnf(vector< vector<int> > &tempcnf, vector <int> assums){
+
+	//currently printing only assumptions
 	static int count = 0;
 	ofstream ofile;
 	ostringstream oss;
@@ -156,16 +158,16 @@ void mySolver::gencnf(vector< vector<int> > &tempcnf, vector <int> assums){
 	string file = oss.str();
 	ofile.open (file.c_str());
 	
-	ofile << "c assumptions";
+	//ofile << "c assumptions";
 	vector<int>::const_iterator it; // declare an iterator
 	it = assums.begin(); // assign it to the start of the set
 	while (it != assums.end()) // while it hasn't reach the end
 	{
-		ofile << *it << " "; // print the value of the element it points to
+		ofile << *it << " 0\n"; // print the value of the element it points to
 		it++; // and iterate to the next element
 	}
 	ofile << endl;
-	
+	/*
 	ofile << "p cnf "<<nvars<<" "<<tempcnf.size()<<endl;
 	for (int i=0;i<tempcnf.size();i++){
 		for (int j=0;j<tempcnf[i].size();j++){
@@ -173,7 +175,7 @@ void mySolver::gencnf(vector< vector<int> > &tempcnf, vector <int> assums){
 		}		
 		ofile <<"0\n";
 	}
-	
+	*/
 	ofile.close();
 	count++;
 }

@@ -1,0 +1,100 @@
+\chapter{Implementation of the SAT solver}
+
+\section{Introduction}
+
+The parallel SAT solver will use the Orthonormal (ON) expansion based algorithm in \cite{sule14}. This algorithm is a generalized version of the DPLL algorithm \cite{DPLL}.
+
+\section{Plan}
+\begin{itemize}
+\item \textit{Sequential Stage} - A sequential form of the algorithm has been implemented in the first stage. Although this will not give an idea of execution time of the parallel algorithm, it can be used to verify the correctness of the approach.
+
+\item \textit{Parallel Stage 1} - The algorithm will undergo slight modifications to achieve parallelism using OpenMP (Open Multi-Processing). OpenMP is an API that supports multi-platform shared memory multiprocessing programming in C, C++ \ldots \cite{openmp}. This is a single machine multi-core implementation. 
+
+\item \textit{Parallel Stage 2} - Large-scale parallelization over multiple machines and cores will be achieved by using MPI (Message Passing Interface). MPI was also used in \cite{pmsat}.
+\end{itemize}
+\section{Implementation}
+
+
+
+
+\textbf{Class} \textit{Solver} - It is the basis of the entire solver. It contains the data structure $C$ which stores the clauses. Its member functions help interect with the class and can be used to solve SAT problems.
+
+Below is the description of the important components of the solver:
+
+\begin{itemize}
+
+\item \textit{Main}() (Algorithm \ref{main}) takes as input the CNF file and stores the clauses in C. Calls Solve() and outputs SAT/UNSAT.
+
+\item $C$ - It refers to the data structure which stores the clauses using \textit{sparse matrix representation}.
+
+\item \textit{Solver::Solve}() (Algorithm \ref{algo}) is called by the main program. It takes as input $C$ and $n_0$. It decides whether to decompose further or solve by direct search over all assignments. It returns whether the input problem is SAT or UNSAT.
+
+\item \textit{Solver::Decompose}() (Algorithms \ref{decompose} and \ref{dist}) decides an ON set of terms and decomposes the input problem. It calls \textit{Solve}() for each of the reduced problems.
+
+\item \textit{Solver::Simplify}() consists of functions \textit{unitpropagate}() and \textit{pureliterals}() which simplify the problem and remove satisfied clauses.
+
+\item \textit{Solver::SolveMinisat}() is a function that takes as input $C$ and returns SAT/UNSAT. It uses the Minisat solver \cite{minisat}.
+\end{itemize}
+
+The sequential algorithm uses Algorithms \ref{algo} and \ref{decompose}. The parallel implementation will only need a slight modification in the decompose() function as shown in Algorithm \ref{dist}.
+
+\begin{algorithm}
+\caption{Main()}
+\label{main}
+\begin{algorithmic}
+\Require CNF file input.cnf
+\State \textbf{Solver} S
+\State $S.C\gets $ input.cnf
+\State \Return \textit{S.Solve}($C$)
+\Ensure SAT/UNSAT
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Base Algorithm - Solver::Solve()}
+\label{algo}
+\begin{algorithmic}
+\Require $C$, $n_0$
+\State $C\gets $\textit{Simplify}($C$)
+\If {$nVars\geq n_0$}
+    \State \textit{Decompose}($C$)
+\Else
+    \State \Return \textit{SolveMinisat}($C$)
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Solver::Decompose()}
+\label{decompose}
+\begin{algorithmic}
+\Require $C$
+\State Decide an ON set of terms $T$.
+\ForAll{$t_i \in T$} 
+    \State Compute reduced problem $C_i = C/t_i$
+    \If {no conflict}
+        \State \Return \textit{Solve}($C_i$) 
+    \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Solver::Decompose-Distribute()}
+\label{dist}
+\begin{algorithmic}
+\Require $C$
+\State Decide an ON set of terms $T$.
+
+\ForAll{$t_i \in T$} \Comment{distribute each subproblem to different node}
+    \State Compute reduced problem $C_i = C/t_i$
+    \If {no conflict}
+        \State \Return \textit{Solve}($C_i$) 
+    \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Current state}
+
+I have implemented the sequential algorithm. $C$ is being represented by a matrix. The next step will be to have sparse matrix representation for the $C$; probably using vectors.

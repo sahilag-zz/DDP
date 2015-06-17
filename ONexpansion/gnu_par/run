@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+perl -pi -e 's/12 == count/13 == count/g' test.cpp
+export MROOT="$PWD/minisat"
+g++ -I$MROOT -D __STDC_LIMIT_MACROS -D __STDC_FORMAT_MACROS\
+	main.cpp test.cpp  $PWD/minisat/core/Solver.cc
+	
+time ./a.out engine_6_nd_case1.cnf
+mkdir u2_4096
+cp gen*.cnf u2_4096/
+
+perl -pi -e 's/13 == count/14 == count/g' test.cpp
+export MROOT="$PWD/minisat"
+g++ -I$MROOT -D __STDC_LIMIT_MACROS -D __STDC_FORMAT_MACROS\
+	main.cpp test.cpp  $PWD/minisat/core/Solver.cc
+	
+time ./a.out engine_6_nd_case1.cnf
+mkdir u2_8192
+cp gen*.cnf u2_8192/

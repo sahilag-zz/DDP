@@ -1,0 +1,25 @@
+#!/bin/bash
+
+call_msat() {
+
+	infile="engine_6_nd_case1.cnf"
+	./part2 $infile $1 $(basename $1 .cnf).sol	
+	
+	#filename = "ex_cnfs/$(basename $1 .cnf).sol"
+	local line=$(head -n 1 $(basename $1 .cnf).sol) 
+	
+	if [ "$line" == "SAT" ];
+	then
+		echo 1
+	else 
+		echo 0
+	fi
+	
+}
+
+#my_func "ex_cnfs/flat30-1.cnf"
+export -f call_msat
+
+#parallel --progress -j8 call_msat {} ::: gen*.cnf | parallel --progress --halt 2  exit
+
+parallel --progress --env PATH --env call_msat --workdir . --sshloginfile nodefile call_msat {} ::: gen*.cnf | parallel --halt 2  exit

@@ -1,0 +1,13 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: main.aux
+The style file: unsrtnat.bst
+Database file #1: Bibliography.bib
+I was expecting a `,' or a `}'---line 29 of file Bibliography.bib
+ :   
+ :   note = {[Online; retrieved September 2014]}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--empty year in pmsat
+Warning--empty year in pmsat
+Warning--empty year in openmp
+Warning--empty year in reduce
+(There was 1 error message)

@@ -1,0 +1,75 @@
+\chapter{Introduction}
+
+\section{Boolean Satisfiability Problem}
+
+The Boolean Satisfiability Problem (SAT) is the problem of determining if there exists an interpretation that satisfies a given Boolean formula. An interpretation is the assignment of TRUE or FALSE values to variables of the given formula. If an assignment exists such that the formula evaluates to TRUE, the formula is called satisfiable. If no such assignment exists, the function expressed by the formula is identically FALSE for all possible variable assignments and the formula is unsatisfiable. A \textit{SAT solver} is the algorithm which solves the SAT problem.
+
+\textbf{Definitions and Terminology:} A propositional logic formula, also called Boolean expression, is built from variables, operators AND (conjunction, also denoted by $\wedge$), OR (disjunction, $\vee$), NOT (negation, $\neg$), and parentheses. A literal consists of a variable A and is either positive ($A$) or negated
+($\neg A$). A clause is a disjunction of literals. A formula is in the conjunctive normal form (CNF) if it is a conjunction of clauses. A boolean formula is generally given to the SAT solver in CNF.
+
+\section{Overview of SAT solvers} 
+
+\subsection{DPLL Algorithm}
+
+Most modern SAT-solvers are based on
+the Davis-Putnam-Loveland-Logemann (DPLL) algorithm \cite{DPLL}. It is a complete, backtracking-based search algorithm for solving the CNF-SAT problem. \footnote{Henceforth, the input formula is in CNF unless specified otherwise.}
+
+The \textit{backtracking algorithm} runs by choosing a literal, assigning a truth value to it, simplifying the formula and then recursively checking if the simplified formula is satisfiable; if this is the case, the original formula is satisfiable; otherwise, the same recursive check is done assuming the opposite truth value. This is known as the \textit{splitting rule}, as it splits the problem into two simpler sub-problems.
+
+The DPLL algorithm enhances over the backtracking algorithm by using the following rules at each step:
+\begin{itemize}
+\item \textit{Unit propagation} - If a clause is a unit clause, i.e. it contains only a single unassigned literal, this clause can only be satisfied by assigning the necessary value to make this literal true.
+
+\item \textit{Pure literal elimination} - If a propositional variable occurs with only one polarity in the formula, it is called pure. Pure literals can always be assigned in a way that makes all clauses containing them true. Thus, these clauses do not constrain the search anymore and can be deleted.
+\end{itemize}
+
+Unsatisfiability of a given partial assignment is detected if one clause becomes empty, i.e. if all its variables have been assigned in a way that makes the corresponding literals false. This is known as the \textit{conflict clause}. Satisfiability of the formula is detected either when all variables are assigned without generating the empty clause, or, in modern implementations, if all clauses are satisfied. Unsatisfiability of the complete formula can only be detected after exhaustive search.
+
+\subsection{Sequential SAT solvers}
+The idea to analyze the conflict clause further led
+to the conflict driven clause learning (CDCL) \cite{GRASP}. Resolving the conflict clause and the
+clauses which have been used in the implications, new
+clauses are learned. These learned clauses can be added
+to the given formula leading to an improved backtracking
+behavior, where larger parts of the search tree are
+closed by a single conflict. The most commonly used
+version of this algorithm is described in \cite{cdcl}.
+
+The most commonly used SAT-solver that implements
+most of the mentioned techniques is MINISAT (\cite{minisat}). This solver provides a basis for many sequential and parallel SAT-solvers including the one implemented in this work.
+
+\subsection{Parallel SAT solvers}
+
+The recursive application of the split rule in the
+DPLL algorithm provides a natural way to parallelize
+the search for a satisfying assignment \cite{overview}. Initially, each computing node receives
+the given formula. Thereafter, only partial interpretations
+are communicated such that each computing
+node receives a different partial interpretation. This is the \textit{Decomposition-based approach}. The
+first parallel SAT-solvers used single-core CPUs which
+communicated via a network. When shared memory
+architectures became available, shared memory communication
+was utilized. A popular decomposition-based parallel solver is PMSAT \cite{pmsat}. It is based on MiniSAT 1.14 and MPI (Message Passing Interface).
+
+
+Another popular technique in parallel SAT solving is the \textit{Portfolio-based technique}. Instead of implementing cooperative parallelism by splitting the
+search space, competitive parallelism is applied where all parallel
+solvers try to find a solution for the same SAT instance. 
+
+\section{A new parallel SAT solver}
+
+\subsection{High-level description}
+This work highlights a decomposition-based parallel SAT solving algorithm. The algorithm is based on the application of a well
+known generalized Boole-Shannon orthonormal (ON) expansion of Boolean functions \cite{sule14}. This is basically an extension of the DPLL algorithm in which the splitting rule is generalized to several variables in terms of ON terms. The subproblems created recursively are solved on parallel computing nodes. After a threshold is reached, direct sequential search is performed on the subproblems at the individual nodes.
+
+\subsection{Motivation}
+Until now, modern CPUs contain only few cores.
+Recent parallel SAT-solvers for such shared-memory
+architectures are mainly based on the techniques developed
+for sequential SAT-solvers. As soon as the individual
+solvers running on different cores share memory,
+the efficiency of the individual solvers decreases. None
+of these parallel solvers seem to scale well if hundreds
+or even thousands of cores become available. 
+
+The algorithm suggested above has the potential to make use of large number of cores due to ease in its parallelization.

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat num1000000 | parallel -j1 --progress --pipe wc
