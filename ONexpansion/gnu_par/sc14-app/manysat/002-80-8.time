@@ -1,6 +1,0 @@
-terminate called after throwing an instance of 'Minisat::OutOfMemoryException'
-./observations: line 4: 31315 Aborted                 (core dumped) manysat2.0 $i -no-luby -rinc=1.5 -phase-saving=0 -rnd-freq=0.02 -ncores=4 -limitEx=10 -det=0 -ctrl=0 > sc14-app/manysat/$(basename $i .cnf).sol
-
-real	20m50.680s
-user	81m33.993s
-sys	0m7.606s
