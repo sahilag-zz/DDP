@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#mkdir sc14-app/manysat
+#for i in sc14-app/*.cnf; do 
+#	(time manysat2.0 $i -no-luby -rinc=1.5 -phase-saving=0 -rnd-freq=0.02 -ncores=4 -limitEx=10 -det=0 -ctrl=0 \
+#		> sc14-app/manysat/$(basename $i .cnf).sol) &> sc14-app/manysat/$(basename $i .cnf).time
+#done
+
+#mkdir sc14-app/plingeling
+#for i in sc14-app/*.cnf; do 
+#	(time plingeling $i > sc14-app/plingeling/$(basename $i .cnf).sol) &> sc14-app/plingeling/$(basename $i .cnf).time
+#done
+
+for i in sc14-app/12pipe_bug1_q0.cnf; do 
+	for j in 1 2 3 4 5 6 7 8 9 10 
+	do 
+		(time ./p1 $i -nproblems=$j > sc14-app/mine/$(basename $i .cnf)sub$j.sol1) &> sc14-app/mine/$(basename $i .cnf)sub$j.time1
+		(time ./part2solve $i > sc14-app/mine/$(basename $i .cnf).sub$j.sol2) &> sc14-app/mine/$(basename $i .cnf)sub$j.time2
+	done
+	rm gen*
+done

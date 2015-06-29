@@ -1,0 +1,5 @@
+#!/bin/bash
+
+g++ -O3 part1.cpp -o p1
+
+time ./p1 $1 -nproblems=$2 > $(basename $1 .cnf).sub$2.sol2

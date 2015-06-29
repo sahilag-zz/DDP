@@ -75,8 +75,10 @@ static void parse_DIMACS_main(B& in, Solver& S) {
     if (cnt  != clauses)
         fprintf(stderr, "WARNING! DIMACS header mismatch: wrong number of clauses.\n");
 }
+/////////////////////////////// my additions //////////////////////////////////
 template<class B, class Solver>
 static void parse_assums_main(B& in, Solver& S){ 
+//when assums are printed as unit clauses
     vec<Lit> lits;
     
     for (;;){
@@ -88,12 +90,23 @@ static void parse_assums_main(B& in, Solver& S){
             S.addClause_(lits); }
     }
 }
-
 template<class Solver>
 static void parse_assums(gzFile input_stream, Solver& S) {
     StreamBuffer in(input_stream);
     parse_assums_main(in, S); }
 
+static void readassums(gzFile input_stream, vec<Lit>& lits) {
+	StreamBuffer in(input_stream);
+    int     parsed_lit, var;
+    lits.clear();
+    for (;;){
+        parsed_lit = parseInt(in);
+        if (parsed_lit == 0) break;
+        var = abs(parsed_lit)-1;
+        lits.push( (parsed_lit > 0) ? mkLit(var) : ~mkLit(var) );
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
 // Inserts problem into solver.
 //
 template<class Solver>

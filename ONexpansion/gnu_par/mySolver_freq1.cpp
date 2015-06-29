@@ -54,7 +54,7 @@ satbool mySolver::decompose(vector <int> assums){
 	simple_simplify(assums,tempcnf);
 	int split = splitVar(tempcnf); 
 	//cout<<split<<" at level "<<count<<endl;
-	if (9 == count) {
+	if (7 == count) {
 		count--;  gencnf(tempcnf,assums); return UNSAT;
 	}
 	
@@ -164,9 +164,10 @@ void mySolver::gencnf(vector< vector<int> > &tempcnf, vector <int> assums){
 	while (it != assums.end()) // while it hasn't reach the end
 	{
 		ofile << *it << " 0\n"; // print the value of the element it points to
+		//ofile << *it<<" ";
 		it++; // and iterate to the next element
 	}
-	ofile << endl;
+	//ofile << "0";
 	/*
 	ofile << "p cnf "<<nvars<<" "<<tempcnf.size()<<endl;
 	for (int i=0;i<tempcnf.size();i++){

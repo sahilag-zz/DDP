@@ -2,5 +2,5 @@
 
 
 for i in gen*.cnf; do 
-	minisat $i 
+	./part2 engine_6_nd_case1.cnf $i 
 done

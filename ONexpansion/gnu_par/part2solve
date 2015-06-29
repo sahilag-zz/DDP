@@ -2,11 +2,11 @@
 
 call_msat() {
 
-	infile="engine_4.cnf"
-	./part2 $infile $1 $(basename $1 .cnf).sol	
+	#infile="engine_4.cnf"
+	./part2 $1 $2 $(basename $2 .cnf).sol	
 	
 	#filename = "ex_cnfs/$(basename $1 .cnf).sol"
-	local line=$(head -n 1 $(basename $1 .cnf).sol) 
+	local line=$(head -n 1 $(basename $2 .cnf).sol) 
 	
 	if [ "$line" == "SAT" ];
 	then
@@ -20,7 +20,7 @@ call_msat() {
 #my_func "ex_cnfs/flat30-1.cnf"
 export -f call_msat
 
-parallel --progress -j8 call_msat {} ::: gen*.cnf | parallel --progress --halt 2  exit
+parallel --progress -j8 call_msat $1 {} ::: gen*.cnf | parallel --halt 2  exit 
 
-#parallel --progress -j8 call_msat {} ::: gen*.cnf | parallel --progress ::: wc
+#parallel -j8 call_msat {} ::: gen*.cnf
 

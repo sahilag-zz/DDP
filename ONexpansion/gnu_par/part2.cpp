@@ -33,14 +33,17 @@ int main (int argc,char *argv[]){
 		S.addClause(clause);
 		clause.clear();
 	}*/
-	
-	gzFile in1 = gzopen(argv[2], "rb");
-	parse_assums(in1, S);
-	gzclose(in1);
-	   
+	if (argc>=3){
+		gzFile in1 = gzopen(argv[2], "rb");
+		parse_assums(in1, S);
+		gzclose(in1);
+	}   
 	// Solve and output to file 
 	vec<Lit> dummy;
+	double parse_time = cpuTime();
 	lbool ret = S.solveLimited(dummy);
+	double solve_time = cpuTime();
+	//std::cout<<"Solve time: "<<solve_time-parse_time<<" s\n";
 	
 	FILE* res = (argc >= 4) ? fopen(argv[3], "wb") : NULL;
 	

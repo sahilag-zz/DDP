@@ -2,11 +2,11 @@
 
 export MROOT="$PWD/minisat"
 g++ -O3 -g0 -march=native -I$MROOT -D __STDC_LIMIT_MACROS -D __STDC_FORMAT_MACROS\
-	part2.cpp $PWD/minisat/core/Solver.cc -lz -o part2
+	part2.cpp $PWD/minisat/core/Solvermodified.cc -lz -o part2
 	
-#time ./part2solve
+#time ./part2solve engine_6_nd_case1.cnf
 
-#time ./solve
+time ./part2 engine_6_nd_case1.cnf
 
-#rm gen*
+
 

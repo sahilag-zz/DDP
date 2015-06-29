@@ -4,11 +4,12 @@ export MROOT="$PWD/minisat"
 g++ -I$MROOT -D __STDC_LIMIT_MACROS -D __STDC_FORMAT_MACROS\
 	main.cpp mySolver_freq1.cpp  $PWD/minisat/core/Solver.cc
 	
-time ./a.out engine_6_nd_case1.cnf
+time ./a.out 12pipe_bug1_q0.cnf 
+#time ./a.out engine_4.cnf
 #time ./solve
 
 #rm gen*
 
-time ./remotesolve
+#time ./remotesolve
 
 #rm gen*
