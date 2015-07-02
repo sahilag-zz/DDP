@@ -1,0 +1,14 @@
+sha0_35_2.cnf
+sha0_35_1.cnf
+dated-10-13-s.cnf
+md5_47_4.cnf
+total-10-19-s.cnf
+vmpc_27.cnf
+12pipe_bug8.cnf
+md5_48_3.cnf
+safe-30-h30-sat.cnf
+gss-16-s100.cnf
+itox_vc1138.cnf
+sha0_35_3.cnf
+sha0_35_4.cnf
+vmpc_28.cnf

@@ -11,11 +11,11 @@
 #	(time plingeling $i > sc14-app/plingeling/$(basename $i .cnf).sol) &> sc14-app/plingeling/$(basename $i .cnf).time
 #done
 
-for i in sc14-app/12pipe_bug1_q0.cnf; do 
-	for j in 1 2 3 4 5 6 7 8 9 10 
+for i in test.cnf; do 
+	for j in 5
 	do 
-		(time ./p1 $i -nproblems=$j > sc14-app/mine/$(basename $i .cnf)sub$j.sol1) &> sc14-app/mine/$(basename $i .cnf)sub$j.time1
-		(time ./part2solve $i > sc14-app/mine/$(basename $i .cnf).sub$j.sol2) &> sc14-app/mine/$(basename $i .cnf)sub$j.time2
+		time ./p1 $i -nproblems=$j 
+		time ./part2solve $i 
 	done
 	rm gen*
 done

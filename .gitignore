@@ -46,3 +46,5 @@
 
 # for my work
 *.cnf
+*.sol*
+*.time*

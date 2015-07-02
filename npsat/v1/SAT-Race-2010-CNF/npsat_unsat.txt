@@ -1,0 +1,12 @@
+hard-0-U-7061.cnf
+hard-10-U-9007.cnf
+hard-11-U-7061.cnf
+hard-12-U-7061.cnf
+hard-13-U-9007.cnf
+hard-15-U-8013.cnf
+hard-25-U-7061.cnf
+hard-2-U-10652.cnf
+hard-2-U-9007.cnf
+hard-6-U-7061.cnf
+hard-7-U-10652.cnf
+hard-9-U-10652.cnf
