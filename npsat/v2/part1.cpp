@@ -24,6 +24,7 @@ public:
 void shuffle(int array[], int size){
 	int max = size-1;
 	int r;
+	srand (time(NULL));
 	while(max!=0){
 		r = rand()%(max+1);
 		swap(array[r],array[max]);
@@ -79,8 +80,9 @@ void read(const string &file, const int &n_assums){
 	}
 	shuffle(array,size);
 	for (int i=0;i<size;i++){
-		cout<<array[i]<<endl;
+		cout<<array[i]<<" ";
 	}
+	cout<<endl;
 	for (int i=0;i<size;i++){
 		ofstream ofile;
 		ostringstream oss;

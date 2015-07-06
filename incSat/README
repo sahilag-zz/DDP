@@ -1,0 +1,14 @@
+part1.cpp: takes cnf and prints assumptions in clause form.
+eg. 34 54 65 0 
+
+p1.sh compiles part1.cpp and creates part1.o
+
+main.cpp: reads cnf and assumption files and returns SAT/UNSAT
+		: uses incremental SAT solving
+		: OpenMP
+		: based on minisat
+		
+sections.cpp: divides for loop into sections.. 
+				trying to have similar assumptions together
+		
+p2.sh : compiles part2.cpp and creates part2.o
